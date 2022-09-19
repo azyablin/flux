@@ -17,7 +17,7 @@
     - содержит серверную часть обмена с использованием mybatis
     - [code](https://github.com/azyablin/flux/tree/main/mybatis)
 - *client*
-    - клиентская часть, использующая WebClient
+    - клиентская часть spring, использующая WebClient
     - [code](https://github.com/azyablin/flux/tree/main/client)
 
 ### Основные моменты
