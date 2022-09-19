@@ -3,10 +3,8 @@ package com.magnit.flux.mybatis.controller;
 import com.magnit.flux.model.entity.Operation;
 import com.magnit.flux.mybatis.dao.MyBatisFluxResultProducer;
 import com.magnit.flux.mybatis.mapper.OperationMapper;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -23,22 +21,6 @@ public class MyBatisOperationController {
     private final SqlSessionFactory sqlSessionFactory;
 
     private final ObjectFactory<MyBatisFluxResultProducer<Operation>> streamResultProducerObjectFactory;
-
-    @SneakyThrows
-    @GetMapping(path = "/test")
-    public Long test() {
-        AtomicLong counter = new AtomicLong(0L);
-        try (
-            SqlSession sqlSession = sqlSessionFactory.openSession();
-            Cursor<Operation> cursor =
-                sqlSession.getMapper(OperationMapper.class).getAllOperations()
-        ) {
-            cursor.forEach(foo -> {
-                counter.incrementAndGet();
-            });
-        }
-        return counter.get();
-    }
 
     @GetMapping(path = "/operations-stream", produces = "application/stream+json")
     public Flux<Operation> getOperationsStream() {
