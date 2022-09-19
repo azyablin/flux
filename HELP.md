@@ -27,7 +27,7 @@
 * [REST + hibernate stream](https://github.com/azyablin/flux/blob/main/hibernate/src/main/java/com/magnit/flux/hibernate/controller/HibernateOperationController.java#L27)
 * [RSocket + hibernate stream](https://github.com/azyablin/flux/blob/main/hibernate/src/main/java/com/magnit/flux/hibernate/controller/HibernateOperationController.java#L32)
 * [объявление курсора Mybatis для отображения отношения ManyToMany](https://github.com/azyablin/flux/blob/main/mybatis/src/main/resources/mapper/operation-detail-mapper.xml#L11)
-* [испоользование сессии MyBatis, чтобы не открывать новую транзакцию](https://github.com/azyablin/flux/blob/main/mybatis/src/main/java/com/magnit/flux/mybatis/dao/MyBatisFluxResultProducer.java#L40)
+* [использование сессии MyBatis, позволяющее избежать долгоиграющих транзакций](https://github.com/azyablin/flux/blob/main/mybatis/src/main/java/com/magnit/flux/mybatis/dao/MyBatisFluxResultProducer.java#L40)
 * [MyBatis cursor + Flux](https://github.com/azyablin/flux/blob/main/mybatis/src/main/java/com/magnit/flux/mybatis/dao/MyBatisFluxResultProducer.java#L42)
 * [REST + MyBatis cursor](https://github.com/azyablin/flux/blob/main/mybatis/src/main/java/com/magnit/flux/mybatis/controller/MyBatisOperationController.java#L26)
 * [блокирующее ограничение скорости чтения, используя обратное давление и Backet4j](https://github.com/azyablin/flux/blob/main/client/src/main/java/com/magnit/flux/client/service/RateLimitService.java#L30)
