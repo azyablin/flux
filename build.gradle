@@ -1,19 +1,55 @@
+buildscript {
+    ext {
+        springBootVersion = '2.7.3'
+    }
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+
 plugins {
-    id 'java'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 }
 
-group 'com.magnit'
-version '1.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
+allprojects {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+subprojects {
+
+    group 'com.magnit.flux'
+    version '1.0-SNAPSHOT'
+
+    apply plugin: 'java'
+
+    apply plugin: "io.spring.dependency-management"
+
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+        }
+    }
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        implementation 'com.h2database:h2:1.4.200'
+        annotationProcessor 'org.projectlombok:lombok'
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
 }
 
-test {
-    useJUnitPlatform()
-}

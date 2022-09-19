@@ -1,2 +1,6 @@
 rootProject.name = 'flux'
-
+include 'model'
+include 'common'
+include 'hibernate'
+include 'mybatis'
+include 'client'

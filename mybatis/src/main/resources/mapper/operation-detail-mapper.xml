@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+-->
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.magnit.flux.mybatis.mapper.OperationMapper">
+
+    <select id="getAllOperations" resultMap="operationResult" resultOrdered="true">
+        select d.operation_id id, d.product_id, p.name product_name from operation_detail d inner
+        join product p on p.id = d.product_id order by d.operation_id
+    </select>
+
+
+    <resultMap id="operationResult" type="com.magnit.flux.model.entity.Operation">
+        <id property="id" column="id"/>
+        <collection property="products" ofType="com.magnit.flux.model.entity.Product">
+            <id property="id" column="product_id"/>
+            <result property="name" column="product_name"/>
+        </collection>
+    </resultMap>
+
+</mapper>
