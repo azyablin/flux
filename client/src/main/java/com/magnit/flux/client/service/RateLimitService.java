@@ -5,8 +5,10 @@ import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import java.time.Duration;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.annotation.PostConstruct;
+import lombok.SneakyThrows;
 import lombok.val;
 import org.reactivestreams.Subscription;
 import org.springframework.stereotype.Service;
@@ -51,27 +53,52 @@ public class RateLimitService {
         val service = Executors.newSingleThreadScheduledExecutor();
         val limit = Bandwidth.simple(rate, Duration.ofMinutes(1));
         val bucket = Bucket.builder().addLimit(limit).build();
+        final long watTime = 50;
+
         BaseSubscriber<Operation> subscriber = new BaseSubscriber<Operation>() {
+
+            private void handleFutureResult(Boolean result) {
+                if (result) {
+                    this.request(1);
+                } else {
+                    service.schedule(() -> asyncRequest(), watTime, TimeUnit.NANOSECONDS);
+                }
+            }
+
+            @SneakyThrows
+            private void asyncRequest() {
+                val future = bucket.asScheduler().tryConsume(1, watTime, service);
+                if (future.isDone()) {
+                    handleFutureResult(future.get());
+                } else {
+                    future.thenAcceptAsync(value -> {
+                        handleFutureResult(value);
+                    });
+                }
+
+            }
+
             @Override
             protected void hookOnSubscribe(Subscription subscription) {
-
+                asyncRequest();
             }
 
             @Override
             protected void hookOnNext(Operation value) {
                 System.out.println(counter.incrementAndGet() + " " + value);
+                asyncRequest();
             }
-        };
 
+        };
         val flux = client.get().retrieve().bodyToFlux(Operation.class);
         flux.subscribe(subscriber);
-        Mono.fromFuture(bucket.asScheduler().consume(rate, service))
-            .subscribe(value -> subscriber.request(1));
+
     }
+
 
     @PostConstruct
     public void init() {
-        executeBlocking(50);
+        executeScheduling(50);
     }
 
 

@@ -34,8 +34,8 @@ public class Operation {
     @SequenceGenerator(name = "sequence", sequenceName = "SQ_OPERATION", allocationSize = 1)
     private Long id;
 
-    @Column(name = "QUANTITY")
-    private Long quantity;
+    @Column(name = "TOTAL_SUM")
+    private Long totalSum;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")

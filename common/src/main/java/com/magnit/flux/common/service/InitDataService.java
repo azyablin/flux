@@ -67,7 +67,7 @@ public class InitDataService {
         List<Customer> customers = (List<Customer>) customerRepository.findAll();
         Flux.range(0, OPERATION_RECORD_LIMIT)
             .map(i -> Operation.builder()
-                .quantity((long) random.nextInt(100))
+                .totalSum((long) random.nextInt(100))
                 .customer(customers.get(random.nextInt(customers.size() - 1)))
                 .products(productSupplier.get())
                 .build())

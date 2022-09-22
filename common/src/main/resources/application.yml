@@ -23,7 +23,7 @@ spring:
       idleTimeout: ${DB_POOL_IDLE_TIMEOUT}
   jpa:
     database-platform: ${DB_PLATFORM}
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         globally_quoted_identifiers: true
